@@ -38,11 +38,11 @@ def split_train_val(img_dir, annotations_dir, train_dir, val_dir, val_split=0.2)
 
 
 def main():
-    
-    img_dir = "data/raw"
-    annotations_dir = "data/yolo"
-    train_dir = "data/train"
-    val_dir = "data/val"
+
+    img_dir = "datasets/data/raw"
+    annotations_dir = "datasets/data/yolo"
+    train_dir = "datasets/data/train"
+    val_dir = "datasets/data/val"
 
     split_train_val(img_dir, annotations_dir, train_dir, val_dir)
     
