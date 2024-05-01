@@ -2,6 +2,7 @@ from object_detection import ObjectDetection
 
 
 def main():
+
     detector = ObjectDetection(capture_index=0)
     detector()
 

@@ -83,7 +83,6 @@ class ObjectDetection:
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
       
         while True:
-          
             start_time = time()
             
             ret, frame = cap.read()
@@ -100,7 +99,6 @@ class ObjectDetection:
             cv2.imshow('YOLOv8 Detection', frame)
  
             if cv2.waitKey(5) & 0xFF == 27:
-                
                 break
         
         cap.release()
@@ -109,6 +107,7 @@ class ObjectDetection:
 
 
 def main():
+    
     detector = ObjectDetection(capture_index=0)
     detector()
 
