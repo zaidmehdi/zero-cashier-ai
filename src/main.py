@@ -1,4 +1,9 @@
+import warnings
+
 from object_detection import ObjectDetection
+
+
+warnings.filterwarnings("ignore")
 
 
 def main():

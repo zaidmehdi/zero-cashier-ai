@@ -46,16 +46,20 @@ class ObjectDetection:
         class_ids = []
         
          # Extract detections for person class
-        for result in results:
-            boxes = result.boxes.cpu().numpy()
-            class_id = boxes.cls[0]
-
-            if class_id == 0.0:
-          
-              xyxys.append(result.boxes.xyxy.cpu().numpy())
-              confidences.append(result.boxes.conf.cpu().numpy())
-              class_ids.append(result.boxes.cls.cpu().numpy().astype(int))
+        try:
             
+            for result in results:
+                boxes = result.boxes.cpu().numpy()
+                class_id = boxes.cls[0]
+
+                if class_id == 0.0:
+            
+                    xyxys.append(result.boxes.xyxy.cpu().numpy())
+                    confidences.append(result.boxes.conf.cpu().numpy())
+                    class_ids.append(result.boxes.cls.cpu().numpy().astype(int))
+
+        except IndexError:
+            print("Nothing detected")    
         
         # Setup detections for visualization
         detections = sv.Detections(
@@ -107,7 +111,7 @@ class ObjectDetection:
 
 
 def main():
-    
+
     detector = ObjectDetection(capture_index=0)
     detector()
 
