@@ -6,6 +6,8 @@ def main():
 
     while True:
         ret, frame = cap.read()
+        frame = cv2.flip(frame, 1)
+        
         if not ret:
             break
 
@@ -14,9 +16,13 @@ def main():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-
     cap.release()
     cv2.destroyAllWindows()
+
+    from ultralytics import YOLO
+    model = YOLO("yolov8n.pt")
+    results = model("src/test.png")
+    print(results) 
 
 
 if __name__ == "__main__":
