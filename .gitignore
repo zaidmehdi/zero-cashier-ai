@@ -1,3 +1,4 @@
 data/
 model/
 runs/
+__pycache__/
