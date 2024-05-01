@@ -17,7 +17,7 @@ class ObjectDetection:
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         print("Using Device: ", self.device)
         
-        self.model = self.load_model("model/yolov8n.pt")
+        self.model = self.load_model("model/best.pt")
         
         self.CLASS_NAMES_DICT = self.model.model.names
     
@@ -90,6 +90,7 @@ class ObjectDetection:
             start_time = time()
             
             ret, frame = cap.read()
+            frame = cv2.flip(frame, 1)
             assert ret
             
             results = self.predict(frame)
