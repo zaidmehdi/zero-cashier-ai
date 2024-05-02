@@ -7,6 +7,8 @@ import torch
 
 from ultralytics import YOLO
 
+from utils import check_collision
+
 
 class ObjectDetection:
 
@@ -95,6 +97,18 @@ class ObjectDetection:
             
             results = self.predict(frame)
             frame = self.plot_bboxes(results, frame)
+
+            try:
+
+                boxes = results[0].boxes.xyxy.cpu().numpy()
+                if len(boxes) <= 1:
+                    print("There is only one object detected")
+
+                elif check_collision(boxes[0], boxes[1]):
+                    print("There is collision between object 0 and 1")
+
+            except IndexError:
+                print("Nothing detected")            
             
             end_time = time()
             fps = 1/np.round(end_time - start_time, 2)
