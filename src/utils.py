@@ -47,6 +47,17 @@ def add_to_cart(shopping_cart:set, person_bbox, boxes, classes):
     return shopping_cart
 
 
+def remove_from_cart(shopping_cart:set, person_bbox, boxes, classes):
+    """
+    Removes item from cart if it is detected as not in collision with the person:
+    """
+     
+    for i, bbox in enumerate(boxes):
+        if not is_person(classes[i]) and not check_collision(person_bbox, bbox):
+            shopping_cart.discard(classes[i])
+    
+    return shopping_cart
+
 
 def main():
      bbox1 = np.array([144.82, 2.0213, 1121.6, 720])

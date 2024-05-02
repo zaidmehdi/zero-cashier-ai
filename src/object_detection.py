@@ -7,7 +7,7 @@ import torch
 
 from ultralytics import YOLO
 
-from utils import check_collision, get_person_bbox, add_to_cart
+from utils import get_person_bbox, add_to_cart, remove_from_cart
 
 
 class ObjectDetection:
@@ -117,6 +117,7 @@ class ObjectDetection:
 
             if person_bbox is not None:
                 shopping_cart = add_to_cart(shopping_cart, person_bbox, boxes, classes)
+                shopping_cart = remove_from_cart(shopping_cart, person_bbox, boxes, classes)
 
             print(f"SHOPPING CART: {shopping_cart}")
             
