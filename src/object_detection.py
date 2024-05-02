@@ -129,7 +129,7 @@ class ObjectDetection:
             print(f"SHOPPING CART: {shopping_cart}")
 
             total_price = get_cart_total_price(shopping_cart, self.PRICE_MAP)
-            cv2.putText(frame, f'Total: {total_price} Euros', (20, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            cv2.putText(frame, f'Total: {total_price:.2f} Euros', (20, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
             cv2.putText(frame, 'Cart:', (20, 170), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             y_offset = 220
