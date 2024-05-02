@@ -135,8 +135,8 @@ class ObjectDetection:
             y_offset = 220
 
             for item in shopping_cart:
-                cv2.putText(frame, f'- {item}: {self.PRICE_MAP[item]} Euros', 
-                            (20, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                cv2.putText(frame, f'- {self.CLASS_NAMES_DICT[item]}: {self.PRICE_MAP[item]} Euros', 
+                            (20, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1)
                 y_offset += 50
             
             end_time = time()
