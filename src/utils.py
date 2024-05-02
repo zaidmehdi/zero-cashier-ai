@@ -14,7 +14,20 @@ def check_collision(bbox1, bbox2):
         else:
 
             return False
-        
+
+
+def get_person_bbox(boxes:np.array, classes:np.array):
+     """
+     Takes a an array of detected boxes and classes and outputs the first bbox 
+     labeled as 'person' and removes it from both arrays.
+     """
+
+     for i, class_id in enumerate(classes):
+          if int(class_id) == 5:
+               return boxes[i], np.delete(boxes, i), np.delete(classes, i)
+
+     return None, boxes, classes
+
 
 def main():
      bbox1 = np.array([144.82, 2.0213, 1121.6, 720])

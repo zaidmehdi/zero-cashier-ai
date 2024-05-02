@@ -7,7 +7,7 @@ import torch
 
 from ultralytics import YOLO
 
-from utils import check_collision
+from utils import check_collision, get_person_bbox
 
 
 class ObjectDetection:
@@ -87,7 +87,8 @@ class ObjectDetection:
         assert cap.isOpened()
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-      
+
+        shopping_cart = []
         while True:
             start_time = time()
             
@@ -101,12 +102,16 @@ class ObjectDetection:
             try:
 
                 boxes = results[0].boxes.xyxy.cpu().numpy()
-                if len(boxes) <= 1:
-                    print("There is only one object detected")
+                classes = results[0].boxes.cls.cpu().numpy().astype(int)
+                print("BOXES:", boxes)
+                print("LABELS:", classes)
+                print("CLASS_DICT:", self.model.model.names)
 
-                elif check_collision(boxes[0], boxes[1]):
-                    print("There is collision between object 0 and 1")
-
+                person_bbox, boxes, classes = get_person_bbox(boxes, classes)
+                print("PERSON:", person_bbox)
+                print("NEW BOXES:", boxes)
+                print("NEW CLASSES:", classes)
+                
             except IndexError:
                 print("Nothing detected")            
             
