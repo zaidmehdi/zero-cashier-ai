@@ -59,6 +59,16 @@ def remove_from_cart(shopping_cart:set, person_bbox, boxes, classes):
     return shopping_cart
 
 
+def get_cart_total_price(shopping_cart:set, price_map:dict):
+    """Given a shopping cart, returns the total price to pay"""
+
+    total_price = 0
+    for item in shopping_cart:
+         total_price += price_map[item]
+    
+    return total_price
+
+
 def main():
      bbox1 = np.array([144.82, 2.0213, 1121.6, 720])
      bbox2 = np.array([187.53, 297.71, 497.89, 719.46])

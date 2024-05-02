@@ -7,7 +7,7 @@ import torch
 
 from ultralytics import YOLO
 
-from utils import get_person_bbox, add_to_cart, remove_from_cart
+from utils import get_person_bbox, add_to_cart, remove_from_cart, get_cart_total_price
 
 
 class ObjectDetection:
@@ -19,9 +19,17 @@ class ObjectDetection:
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         print("Using Device: ", self.device)
         
-        self.model = self.load_model("model/best.pt")
+        self.model = self.load_model("model/last.pt")
         
         self.CLASS_NAMES_DICT = self.model.model.names
+
+        self.PRICE_MAP = {
+            0: 9.99,
+            1: 2.59,
+            2: 1.05,
+            3: 21.47,
+            4: 17.84
+            }
     
         self.box_annotator = sv.BoxAnnotator(sv.ColorPalette.DEFAULT, thickness=3, text_thickness=3, text_scale=1.5)
     
@@ -114,12 +122,22 @@ class ObjectDetection:
             print(f"PERSON BBOX: {person_bbox}")
             print(f"BOXES: {boxes}")
 
-
             if person_bbox is not None:
                 shopping_cart = add_to_cart(shopping_cart, person_bbox, boxes, classes)
                 shopping_cart = remove_from_cart(shopping_cart, person_bbox, boxes, classes)
 
             print(f"SHOPPING CART: {shopping_cart}")
+
+            total_price = get_cart_total_price(shopping_cart, self.PRICE_MAP)
+            cv2.putText(frame, f'Total: {total_price} Euros', (20, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+            cv2.putText(frame, 'Cart:', (20, 170), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            y_offset = 220
+
+            for item in shopping_cart:
+                cv2.putText(frame, f'- {item}: {self.PRICE_MAP[item]} Euros', 
+                            (20, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                y_offset += 50
             
             end_time = time()
             fps = 1/np.round(end_time - start_time, 2)
