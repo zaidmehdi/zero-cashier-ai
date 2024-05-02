@@ -18,15 +18,30 @@ def check_collision(bbox1, bbox2):
 
 def get_person_bbox(boxes:np.array, classes:np.array):
      """
-     Takes a an array of detected boxes and classes and outputs the first bbox 
+     Takes arrays of detected boxes and classes and outputs the first bbox 
      labeled as 'person' and removes it from both arrays.
      """
 
      for i, class_id in enumerate(classes):
           if int(class_id) == 5:
-               return boxes[i], np.delete(boxes, i), np.delete(classes, i)
+               return boxes[i], np.delete(boxes, i, axis=0), np.delete(classes, i, axis=0)
 
      return None, boxes, classes
+
+
+def add_to_cart(shopping_cart:set, person_bbox, boxes, classes):
+    """
+    Takes the person_bbox, and arrays of the other boxes and classes.
+    Checks for collision between the person and every other item in boxes
+    Adds items in collision to a set of items (shopping cart).
+    """
+
+    for i, bbox in enumerate(boxes):
+        if check_collision(person_bbox, bbox):
+            shopping_cart.add(classes[i])
+    
+    return shopping_cart
+
 
 
 def main():

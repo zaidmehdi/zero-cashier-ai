@@ -7,7 +7,7 @@ import torch
 
 from ultralytics import YOLO
 
-from utils import check_collision, get_person_bbox
+from utils import check_collision, get_person_bbox, add_to_cart
 
 
 class ObjectDetection:
@@ -38,6 +38,11 @@ class ObjectDetection:
        
         results = self.model(frame)
         
+        return results
+    
+    def track(self, frame):
+        results = self.model.track(frame, persist=True)
+
         return results
     
 
@@ -88,7 +93,7 @@ class ObjectDetection:
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-        shopping_cart = []
+        shopping_cart = set()
         while True:
             start_time = time()
             
@@ -96,24 +101,24 @@ class ObjectDetection:
             frame = cv2.flip(frame, 1)
             assert ret
             
-            results = self.predict(frame)
+            results = self.track(frame)
             frame = self.plot_bboxes(results, frame)
 
-            try:
+            boxes = results[0].boxes.xyxy.cpu().numpy()
+            classes = results[0].boxes.cls.cpu().numpy().astype(int)
 
-                boxes = results[0].boxes.xyxy.cpu().numpy()
-                classes = results[0].boxes.cls.cpu().numpy().astype(int)
-                print("BOXES:", boxes)
-                print("LABELS:", classes)
-                print("CLASS_DICT:", self.model.model.names)
+            print(f"BOXES: {boxes}")
 
-                person_bbox, boxes, classes = get_person_bbox(boxes, classes)
-                print("PERSON:", person_bbox)
-                print("NEW BOXES:", boxes)
-                print("NEW CLASSES:", classes)
-                
-            except IndexError:
-                print("Nothing detected")            
+
+            person_bbox, boxes, classes = get_person_bbox(boxes, classes)
+            print(f"PERSON BBOX: {person_bbox}")
+            print(f"BOXES: {boxes}")
+
+
+            if person_bbox is not None:
+                shopping_cart = add_to_cart(shopping_cart, person_bbox, boxes, classes)
+
+            print(f"SHOPPING CART: {shopping_cart}")
             
             end_time = time()
             fps = 1/np.round(end_time - start_time, 2)
