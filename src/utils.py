@@ -16,6 +16,10 @@ def check_collision(bbox1, bbox2):
             return False
 
 
+def is_person(n:int):
+     return True if int(n) == 5 else False
+
+
 def get_person_bbox(boxes:np.array, classes:np.array):
      """
      Takes arrays of detected boxes and classes and outputs the first bbox 
@@ -23,7 +27,7 @@ def get_person_bbox(boxes:np.array, classes:np.array):
      """
 
      for i, class_id in enumerate(classes):
-          if int(class_id) == 5:
+          if is_person(class_id):
                return boxes[i], np.delete(boxes, i, axis=0), np.delete(classes, i, axis=0)
 
      return None, boxes, classes
@@ -37,7 +41,7 @@ def add_to_cart(shopping_cart:set, person_bbox, boxes, classes):
     """
 
     for i, bbox in enumerate(boxes):
-        if check_collision(person_bbox, bbox):
+        if not is_person(classes[i]) and check_collision(person_bbox, bbox):
             shopping_cart.add(classes[i])
     
     return shopping_cart
