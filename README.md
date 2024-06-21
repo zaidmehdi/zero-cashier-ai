@@ -3,6 +3,8 @@
 ![Demo Picture](https://github.com/zaidmehdi/automated-supermarket-checkout/assets/122180508/7480aaca-1d9c-41d9-bfb7-a275e224f175)
   
 
+Before being able to run the main file, you need to have the weights of the detection model saved under `model/last.pt`
+  
 Steps to run locally:  
 1. Create a conda environment:
 ```
