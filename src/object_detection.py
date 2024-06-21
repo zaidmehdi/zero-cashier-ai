@@ -24,11 +24,11 @@ class ObjectDetection:
         self.CLASS_NAMES_DICT = self.model.model.names
 
         self.PRICE_MAP = {
-            0: 9.99,
-            1: 2.59,
-            2: 1.05,
+            1: 9.99,
+            2: 2.59,
             3: 21.47,
-            4: 17.84
+            4: 1.05,
+            5: 17.84
             }
     
         self.box_annotator = sv.BoxAnnotator(sv.ColorPalette.DEFAULT, thickness=3, text_thickness=3, text_scale=1.5)

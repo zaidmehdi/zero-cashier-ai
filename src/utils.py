@@ -17,7 +17,7 @@ def check_collision(bbox1, bbox2):
 
 
 def is_person(n:int):
-     return True if int(n) == 5 else False
+     return True if int(n) == 0 else False
 
 
 def get_person_bbox(boxes:np.array, classes:np.array):
